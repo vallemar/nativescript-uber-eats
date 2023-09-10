@@ -359,7 +359,6 @@ const americanRestaurantDishes: Dish[] = [
         img: "https://example.com/images/pulledchickensandwich.jpg",
         price: 10.99
     },
-   
     {
         name: "Fried Green Tomatoes",
         type: "Side Dish",

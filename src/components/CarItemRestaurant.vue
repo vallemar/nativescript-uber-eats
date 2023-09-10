@@ -2,7 +2,6 @@
 import { PropType, ref } from 'nativescript-vue';
 import Icon from './Icon.vue';
 import { Restaurant } from '~/types';
-import { FlexboxLayout, Image, StackLayout } from '@nativescript/core';
 
 const { restaurant, index } = defineProps({
   restaurant: {

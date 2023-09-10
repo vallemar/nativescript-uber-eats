@@ -5,9 +5,9 @@
   "private": true,
   "dependencies": {
     "@nativescript-community/ui-collectionview": "^5.1.9",
-    "@nativescript-community/ui-image": "^4.3.11",
     "@nativescript-community/ui-pager": "^14.1.6",
     "@nativescript/core": "^8.5.9",
+    "@triniwiz/nativescript-image-cache-it": "^7.4.0",
     "nativescript-vue": "3.0.0-beta.8"
   },
   "devDependencies": {

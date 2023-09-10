@@ -1,6 +1,5 @@
 import { TypeItem } from "./MockData";
 
-
 export type InfoItem = {
     icon: string;
     text: string;
@@ -49,3 +48,9 @@ export type AdsItem = {
 
 export type DataItem = FoodOptionItem | RestaurantItem | AdsItem
 
+export type ItemViewRestaurant = {
+    name: string,
+    typeItem: string,
+    index: string,
+    hasFocus: boolean
+  } | Dish & { typeItem: string } | { typeItem: string }

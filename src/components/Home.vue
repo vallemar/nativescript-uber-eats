@@ -18,12 +18,11 @@ import { onScrollDirection } from '~/ScrollUtil';
 const headerViewRef = ref();
 
 const durationHeaderAnimation = 250;
-
 let heightHeader = 0;
 let animating = false;
 let collapsed = false;
 
-function loadedcollectionView(args: { object: CollectionView }) {
+function loadedCollectionView(args: { object: CollectionView }) {
   const header = headerViewRef.value.nativeView as View;
   heightHeader = 0;
   header.eachChildView((child) => {
@@ -82,35 +81,6 @@ const onScroll = (args: { object: CollectionView, scrollOffset: number }) => {
 function goTo(restaurant: Restaurant, index: number) {
 
 
-    const config: SharedTransitionConfig = {
-        pageStart: {
-          x: 0,
-          y: 300,
-          // Try commenting above values and uncommenting these...
-          // x: 0,
-          // y: -300,
-        },
-        pageEnd: {
-          // use nice linear duration on Android
-          duration: global.isAndroid ? 500 : 500,
-          // use custom spring on iOS
-          spring: { tension: 60, friction: 8, mass: 4 },
-          opacity: 1,
-       
-        },
-        pageReturn: {
-          duration: 500,
-          x: -Screen.mainScreen.widthDIPs,
-          y: 0,
-          opacity: 0,
-        },
-        interactive:{
-          dismiss:{
-          finishThreshold:0.5
-          }
-        }
-    };
-
   if (isIOS) {
     $showModal(Details, {
       transition: SharedTransition.custom(new PageTransition()),
@@ -122,8 +92,36 @@ function goTo(restaurant: Restaurant, index: number) {
 
     })
   } else {
+
     $navigateTo(Details, {
-      transition: SharedTransition.custom(new PageTransition(), config),
+      transition: SharedTransition.custom(new PageTransition(), {
+        pageStart: {
+          x: 0,
+          y: 300,
+          // Try commenting above values and uncommenting these...
+          // x: 0,
+          // y: -300,
+        },
+        pageEnd: {
+          // use nice linear duration on Android
+          duration: 500,
+          // use custom spring on iOS
+          spring: { tension: 60, friction: 8, mass: 4 },
+          opacity: 1,
+
+        },
+        pageReturn: {
+          duration: 500,
+          x: -Screen.mainScreen.widthDIPs,
+          y: 0,
+          opacity: 0,
+        },
+        interactive: {
+          dismiss: {
+            finishThreshold: 0.5
+          }
+        }
+      }),
       props: {
         restaurant,
         index
@@ -131,7 +129,6 @@ function goTo(restaurant: Restaurant, index: number) {
 
     })
   }
-
 }
 </script>
 
@@ -144,12 +141,12 @@ function goTo(restaurant: Restaurant, index: number) {
 
       <GridLayout rows="auto">
         <!--  <StackLayout row="0" ref="refHeader" @loaded="loadedHeader" class="px-4 py-1"> -->
-        <StackLayout row="0" ref="headerViewRef" class="px-4 py-1">
+        <StackLayout ref="headerViewRef" class="px-4 py-1">
           <Header class="my-2"></Header>
           <TextSearch class="mt-4  pb-2"></TextSearch>
         </StackLayout>
 
-        <CollectionView @layoutChanged="loadedcollectionView" row="0" @scroll="onScroll" :items="items" colWidth="100%"
+        <CollectionView @layoutChanged="loadedCollectionView" @scroll="onScroll" :items="items" colWidth="100%"
           :itemTemplateSelector="itemTemplate" class="bg-gray" height="100%">
           <template #default="{ item, index }">
             <StackLayout class="android:pb-3 ios:pb-2" @tap="goTo(item, index)">
