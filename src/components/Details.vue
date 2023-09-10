@@ -42,28 +42,6 @@ function buidItemsList() {
   })
 }
 
-
-
-/* SharedTransition.events().on(
-  SharedTransition.startedEvent,
-  (data: SharedTransitionEventData) => {
-
-    setTimeout(() => {
-
-    //  (imageRestaurantRef.value.nativeView as View).opacity = 0;
-    }, 200);
-  }
-)
-const loadedImg = (args) => {
-  
-  args.object.opacity = 0
-  setTimeout(() => {
-    args.object.opacity = 1
-  }, 300)
-}; */
-
-
-
 const onScroll = (args: { object: CollectionView, scrollOffset: number }) => {
   const headerView: View = headerRef.value.nativeView;
   if (args.scrollOffset > 200 && headerView.visibility != "visible" && animatingHeaderCategory == false) {
