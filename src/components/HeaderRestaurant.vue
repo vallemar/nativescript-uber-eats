@@ -21,7 +21,7 @@ const back = (args: any) => {
 <template>
   <StackLayout class="">
     <GridLayout height="170">
-      <NSImg height="170" stretch="fill" width="100%" :src="restaurant.img">
+      <NSImg height="170" stretch="aspectFill" width="100%" :src="restaurant.img">
       </NSImg>
       <Icon @tap="back" fontSize="28" horizontalAlignment="left" verticalAlignment="top" icon="close" translateY="10"
         translateX="10" class="w-[45] h-[45] text-center rounded-full bg-white text-black"></Icon>
@@ -38,7 +38,7 @@ const back = (args: any) => {
         <Label class="font-bold rounded-full ml-1" :text="`(${restaurant.numberRatings}+ ratings) • `"></Label>
         <Label class="font-bold rounded-full ml-1" :text="`${restaurant.typeFood} • `"></Label>
         <Label class="font-bold rounded-full ml-1" text="€ • "></Label>
-        <NSImg height="20" width="20" class="ml-1" stretch="fill" src="~/assets/img/uber_one.png"> </NSImg>
+        <NSImg height="20" width="20" class="ml-1" stretch="aspectFill" src="~/assets/img/uber_one.png"> </NSImg>
       </FlexboxLayout>
       <Label class="text-gray ml-4" :text="restaurant.estimatedTime"></Label>
 

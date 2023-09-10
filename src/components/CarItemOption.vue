@@ -13,7 +13,7 @@ const { item } = defineProps({
 
 <template>
   <StackLayout class="bg-gray mx-1 py-2 rounded-2xl flex-1">
-    <NSImg width="60" height="60" stretch="fill" :src="item.img"> </NSImg>
+    <NSImg width="60" height="60" stretch="aspectFill" :src="item.img"> </NSImg>
     <Label :text="item.title" class=" text-base text-center text-black"></Label>
   </StackLayout>
 </template>

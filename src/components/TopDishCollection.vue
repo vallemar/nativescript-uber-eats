@@ -19,7 +19,7 @@ const { restaurant } = defineProps({
         <GridLayout height="110">
           <NSImg
             placeholderImageUri="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=110&ixid=MnwxfDB8MXxyYW5kb218MHx8aGFtYnVyZ2VyfHx8fHx8MTY5NDM3OTczOA&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=110"
-            borderRadius="8" width="100%" height="110" stretch="fill"
+            borderRadius="8" width="100%" height="110" stretch="aspectFill"
             :src=" `https://source.unsplash.com/random/110x110?sig=${index + 1}&hamburger` ">
           </NSImg>
           <FlexboxLayout v-if=" index < 3 " verticalAlignment="top" horizontallAlignment="left" class="mt-2">

@@ -170,7 +170,7 @@ function goTo(restaurant: Restaurant, index: number) {
                         <Label :text="ad.subtitle"
                           class="font-bold text-base text-center mt-1 text-black bg-white rounded-full"></Label>
                       </FlexboxLayout>
-                      <NSImg height="150" width="35%" stretch="fill" borderRadius="20" :src="ad?.img"> </NSImg>
+                      <NSImg height="150" width="35%" stretch="aspectFill" borderRadius="20" :src="ad?.img"> </NSImg>
                     </FlexboxLayout>
                   </StackLayout>
                 </PagerItem>
