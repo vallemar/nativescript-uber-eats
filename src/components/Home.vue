@@ -135,19 +135,15 @@ function goTo(restaurant: Restaurant, index: number) {
 <template>
   <Frame>
     <Page actionBarHidden="true" androidStatusBarBackground="white">
-
-
-
-
       <GridLayout rows="auto">
-        <!--  <StackLayout row="0" ref="refHeader" @loaded="loadedHeader" class="px-4 py-1"> -->
         <StackLayout ref="headerViewRef" class="px-4 py-1">
           <Header class="my-2"></Header>
           <TextSearch class="mt-4  pb-2"></TextSearch>
         </StackLayout>
 
         <CollectionView @layoutChanged="loadedCollectionView" @scroll="onScroll" :items="items" colWidth="100%"
-          :itemTemplateSelector="itemTemplate" class="bg-gray" height="100%">
+          :itemTemplateSelector="itemTemplate" class="bg-gray" height="100%" 
+          iosOverflowSafeArea="true" ios:marginTop="1">
           <template #default="{ item, index }">
             <StackLayout class="android:pb-3 ios:pb-2" @tap="goTo(item, index)">
               <CarItemRestaurant :restaurant="item" :index="index"></CarItemRestaurant>

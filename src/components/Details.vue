@@ -97,8 +97,8 @@ const onScroll = (args: { object: CollectionView, scrollOffset: number }) => {
 
 <template>
   <Page actionBarHidden="true" androidStatusBarBackground="white">
-    <GridLayout class=" bg-white">
-      <CollectionView verticalAlignment="top" separatorColor="transparent" :itemTemplateSelector="itemTemplate"
+    <GridLayout class="bg-white">
+      <CollectionView iosOverflowSafeArea="true" verticalAlignment="top" separatorColor="transparent" :itemTemplateSelector="itemTemplate"
         :items="items" colWidth="100%" height="100%" @scroll="onScroll">
         <template #header="{ item, index }">
           <StackLayout class="">
