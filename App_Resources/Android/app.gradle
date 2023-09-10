@@ -1,6 +1,8 @@
 // You can add your native dependencies here
 dependencies {
 //  implementation 'androidx.multidex:multidex:2.0.1'
+  implementation 'androidx.multidex:multidex:2.0.1'  //with androidx libraries
+
 }
 
 android {
@@ -11,7 +13,7 @@ android {
   defaultConfig {
     minSdkVersion 17
     // targetSdkVersion 32
-
+  multiDexEnabled true
     // Version Information
     versionCode 1
     versionName "1.0.0"
