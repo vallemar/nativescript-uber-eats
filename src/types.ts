@@ -48,9 +48,11 @@ export type AdsItem = {
 
 export type DataItem = FoodOptionItem | RestaurantItem | AdsItem
 
-export type ItemViewRestaurant = {
+export type CategoryItem = {
     name: string,
     typeItem: string,
-    index: string,
+    index: number,
     hasFocus: boolean
-  } | Dish & { typeItem: string } | { typeItem: string }
+}
+
+export type ItemViewRestaurant = CategoryItem | Dish & { typeItem: string } | { typeItem: string }

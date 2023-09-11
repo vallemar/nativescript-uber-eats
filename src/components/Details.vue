@@ -3,9 +3,9 @@ import { PropType, ref } from 'nativescript-vue';
 import HeaderRestaurant from './HeaderRestaurant.vue';
 import DishItem from './DishItem.vue';
 import TopDishCollection from './TopDishCollection.vue';
-import { Restaurant, Dish, ItemViewRestaurant } from '~/types';
+import { Restaurant, Dish, ItemViewRestaurant, CategoryItem } from '~/types';
 import type { CollectionView } from '@nativescript-community/ui-collectionview';
-import { Label, ScrollView, View } from '@nativescript/core';
+import { Label, ScrollView, View, isIOS } from '@nativescript/core';
 
 const getAllCategories = (dishes: Dish[]) => [...new Set(dishes.map((dish) => dish.type))].sort();
 const itemTemplate = (args: { item: ItemViewRestaurant }) => args.item.typeItem;
@@ -18,14 +18,17 @@ const { restaurant, index } = defineProps({
   index: Number
 })
 
+const collectionViewRef = ref();
 const headerCategoriesRef = ref();
 const headerRef = ref();
-const categories = ref(getAllCategories(restaurant.dishes).map(category => ({ name: category, typeItem: "category", hasFocus: false, index: 0 })))
+const categories = ref<CategoryItem[]>(getAllCategories(restaurant.dishes).map<CategoryItem>(category => ({ name: category, typeItem: "category", hasFocus: false, index: 0 })))
 
 const dishes = restaurant.dishes.map<Dish & { typeItem: string }>((dish) => ({ ...dish, ...{ typeItem: "food", description: dish.description.split(" ").slice(0, 15).join(" ") + "..." } }))
 const items: ItemViewRestaurant[] = [{ typeItem: "header" }, { typeItem: "top" }];
 let animatingHeaderCategory = false;
+let enableWatchHeaderCategory = true;
 let currentCategory = -1;
+let offsetFirstCategory = 2;
 
 buidItemsList();
 
@@ -71,11 +74,16 @@ const onScroll = (args: { object: CollectionView, scrollOffset: number }) => {
       animatingHeaderCategory = false;
     })
   }
+  if (enableWatchHeaderCategory)
+    updateTabsPosition(args.object);
+}
 
-  const actualVisibleCategories = categories.value.map(category => (args.object.isItemAtIndexVisible(category.index)))
+function updateTabsPosition(collectionView: CollectionView, forcePosition = -1) {
+  const actualVisibleCategories = categories.value.map((category) => forcePosition == -1 ? (collectionView.isItemAtIndexVisible(category.index)) : category.index === forcePosition);
 
-  let firstVisible = actualVisibleCategories.findIndex(visibleCategory => visibleCategory)
-  firstVisible = firstVisible == 0 ? 0 : firstVisible - 1;
+
+  let firstVisible = actualVisibleCategories.findIndex(visibleCategory => visibleCategory);
+  firstVisible = firstVisible == 0 ? 0 : forcePosition == -1 ? firstVisible - 1 : firstVisible;
   if (firstVisible != -1 && currentCategory != firstVisible) {
     currentCategory = firstVisible;
     categories.value.forEach(c => c.hasFocus = false);
@@ -90,7 +98,18 @@ const onScroll = (args: { object: CollectionView, scrollOffset: number }) => {
       return true;
     })
   }
+}
 
+function goToCategory(category: CategoryItem) {
+  enableWatchHeaderCategory = false;
+  const collectionView: CollectionView = collectionViewRef.value.$el.nativeView;
+  const indexInCollectionView = category.index + offsetFirstCategory;
+
+  collectionView.scrollToIndex(indexInCollectionView - 1, true);
+  setTimeout(() => {
+    updateTabsPosition(collectionView, category.index);
+    enableWatchHeaderCategory = true;
+  }, isIOS ? 350 : 100);
 }
 
 </script>
@@ -98,8 +117,9 @@ const onScroll = (args: { object: CollectionView, scrollOffset: number }) => {
 <template>
   <Page actionBarHidden="true" androidStatusBarBackground="white">
     <GridLayout class="bg-white">
-      <CollectionView iosOverflowSafeArea="true" verticalAlignment="top" separatorColor="transparent" :itemTemplateSelector="itemTemplate"
-        :items="items" colWidth="100%" height="100%" @scroll="onScroll">
+      <CollectionView ref="collectionViewRef" iosOverflowSafeArea="true" verticalAlignment="top"
+        separatorColor="transparent" :itemTemplateSelector="itemTemplate" :items="items" colWidth="100%" height="100%"
+        @scroll="onScroll">
         <template #header="{ item, index }">
           <StackLayout class="">
             <HeaderRestaurant :restaurant="restaurant" :index="index"></HeaderRestaurant>
@@ -130,8 +150,8 @@ const onScroll = (args: { object: CollectionView, scrollOffset: number }) => {
         <GridLayout height="60" width="100%" class="">
           <ScrollView orientation="horizontal" scrollBarIndicatorVisible="false">
             <StackLayout orientation="horizontal" ref="headerCategoriesRef">
-              <Label v-for="(  category, index  ) in   categories  " :key=" index " :text=" category.name " class="px-3 py-1"
-                style="border-bottom-width: 6"
+              <Label v-for="( category, index ) in categories" :key=" index "
+                :text=" category.name " class="px-3 py-1" @tap="goToCategory(category)" style="border-bottom-width: 6"
                 :class=" [category.hasFocus === true ? 'border-b-black' : 'border-b-gray-300'] ">
               </Label>
             </StackLayout>

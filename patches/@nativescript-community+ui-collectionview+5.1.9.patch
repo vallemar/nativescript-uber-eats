@@ -1,0 +1,51 @@
+diff --git a/node_modules/@nativescript-community/ui-collectionview/index.android.js b/node_modules/@nativescript-community/ui-collectionview/index.android.js
+index d33e9ef..e7f2b83 100644
+--- a/node_modules/@nativescript-community/ui-collectionview/index.android.js
++++ b/node_modules/@nativescript-community/ui-collectionview/index.android.js
+@@ -72,6 +72,21 @@ var LongPressGestureListenerImpl = /** @class */ (function (_super) {
+     };
+     return LongPressGestureListenerImpl;
+ }(android.view.GestureDetector.SimpleOnGestureListener));
++
++var SmoothScroller = /** @class */ (function (_super) {
++    __extends(SmoothScroller, _super);
++    function SmoothScroller() {
++        var _this = _super.call(this, Utils.android.getApplicationContext()) || this;
++        return global.__native(_this);
++    }
++    SmoothScroller.prototype.getVerticalSnapPreference = function () {
++        return androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_START;
++
++    };
++    return SmoothScroller;
++}(androidx.recyclerview.widget.LinearSmoothScroller));
++
++let smoothScroller;
+ let LayoutParams;
+ const extraLayoutSpaceProperty = new Property({
+     name: 'extraLayoutSpace'
+@@ -186,6 +201,10 @@ export class CollectionView extends CollectionViewBase {
+         // Need to disable them when using animation indicator.
+         animator.setSupportsChangeAnimations(false);
+         nativeView.setItemAnimator(animator);
++
++        smoothScroller = new SmoothScroller()
++
++
+         this.refresh();
+     }
+     disposeNativeView() {
+@@ -799,7 +818,8 @@ export class CollectionView extends CollectionViewBase {
+             return;
+         }
+         if (animated) {
+-            view.smoothScrollToPosition(index);
++            smoothScroller.setTargetPosition(index)
++            view.getLayoutManager().startSmoothScroll(smoothScroller);
+         }
+         else {
+             view.scrollToPosition(index);
+diff --git a/node_modules/@nativescript-community/ui-collectionview/platforms/android/ui_collectionview.aar b/node_modules/@nativescript-community/ui-collectionview/platforms/android/ui_collectionview.aar
+new file mode 100644
+index 0000000..2fbd3b0
+Binary files /dev/null and b/node_modules/@nativescript-community/ui-collectionview/platforms/android/ui_collectionview.aar differ
